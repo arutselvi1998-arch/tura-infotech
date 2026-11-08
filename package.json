@@ -1,0 +1,1 @@
+{"name":"tura-infotech","version":"1.0.0","private":true,"description":"Tura Infotech website foundation based on supplied design references","scripts":{"check":"node --check dist/app.js","start":"node server.cjs"}}
