@@ -2214,6 +2214,28 @@ studentReferenceRender=function(){conversation006BaseRender();queueMicrotask(()=
 window.addEventListener('hashchange',()=>queueMicrotask(()=>queueMicrotask(()=>studentTicketConversation006Render())));
 queueMicrotask(()=>queueMicrotask(()=>studentTicketConversation006Render()));
 
+// Keep admin entry controls out of public and student portal navigation.
+function hideAdminEntryOutsideAdmin(){
+  const isAdmin=location.hash.replace(/^#\/?/,'').startsWith('admin');
+  document.querySelectorAll('[data-tura-admin-entry-hidden]').forEach(el=>{
+    if(isAdmin){el.hidden=false;delete el.dataset.turaAdminEntryHidden}
+  });
+  if(isAdmin)return;
+  document.querySelectorAll('a,button').forEach(el=>{
+    const href=(el.getAttribute('href')||'').replace(/^#\/?/,'').toLowerCase();
+    const label=(el.textContent||'').trim().replace(/\s+/g,' ').toLowerCase();
+    if(href==='admin'||href.startsWith('admin/')||label==='admin portal'){
+      el.hidden=true;
+      el.dataset.turaAdminEntryHidden='true';
+    }
+  });
+}
+const adminEntryObserver=new MutationObserver(()=>queueMicrotask(hideAdminEntryOutsideAdmin));
+const adminEntryRoot=document.querySelector('#app')||document.body;
+adminEntryObserver.observe(adminEntryRoot,{childList:true,subtree:true});
+window.addEventListener('hashchange',()=>queueMicrotask(()=>queueMicrotask(hideAdminEntryOutsideAdmin)));
+queueMicrotask(()=>queueMicrotask(hideAdminEntryOutsideAdmin));
+
 // Admin tools are browser-local planning tools, not authenticated operations.
 const adminTabs=[['overview','Dashboard'],['courses','Courses'],['students','Students'],['trainers','Trainers'],['bookings','Demo bookings'],['orders','Orders'],['payments','Payments'],['offers','Offers'],['testimonials','Testimonials'],['careers','Careers'],['analytics','Analytics'],['support','Support'],['settings','Settings']];
 const adminDraftDefinitions={courses:{label:'course',heading:'Shape the learning catalogue.',description:'Prepare course proposals for review before publishing.',fields:[['title','Course title','text',true],['category','Category','select',true,['Design','Data','Agile','Other']],['description','Course summary','textarea',true]]},trainers:{label:'trainer requirement',heading:'Plan your teaching team.',description:'Draft trainer requirements without creating accounts or access grants.',fields:[['title','Role or expertise needed','text',true],['course','Learning path','course',true],['description','Experience and teaching requirements','textarea',true]]},offers:{label:'offer proposal',heading:'Give new learners a thoughtful start.',description:'Prepare promotional ideas for approval. Drafts do not change checkout prices.',fields:[['title','Offer name','text',true],['code','Proposed code','text',true],['discount','Proposed discount (%)','number',true],['date','Planned expiry date','date',true],['description','Eligibility and terms','textarea',true]]},testimonials:{label:'testimonial draft',heading:'Make room for learner stories.',description:'Prepare verified, consented reviews for editorial review. Nothing is published here.',fields:[['title','Reviewer display name','text',true],['course','Learning path','course',true],['description','Approved review text','textarea',true],['consent','Consent or source reference','text',true]]},careers:{label:'job draft',heading:'Plan the next opportunity.',description:'Prepare role descriptions for review before accepting applications.',fields:[['title','Role title','text',true],['location','Location or remote arrangement','text',true],['type','Employment type','select',true,['Full-time','Part-time','Contract','Internship']],['description','Responsibilities and requirements','textarea',true]]},support:{label:'support note',heading:'Keep the next action clear.',description:'Track local planning notes. These are not submitted customer tickets.',fields:[['title','Note subject','text',true],['priority','Priority','select',true,['Normal','High','Low']],['description','Issue context and next action','textarea',true]]}};
