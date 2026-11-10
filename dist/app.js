@@ -2236,6 +2236,32 @@ adminEntryObserver.observe(adminEntryRoot,{childList:true,subtree:true});
 window.addEventListener('hashchange',()=>queueMicrotask(()=>queueMicrotask(hideAdminEntryOutsideAdmin)));
 queueMicrotask(()=>queueMicrotask(hideAdminEntryOutsideAdmin));
 
+// Apply the supplied official logo to navigation brand slots across all portals.
+function applyOfficialTuraLogo(){
+  const src='assets/tura-logo.png';
+  let favicon=document.querySelector('link[rel="icon"]');if(!favicon){favicon=document.createElement('link');favicon.rel='icon';document.head.append(favicon)}favicon.type='image/png';favicon.href=src;
+  const candidates=new Set(document.querySelectorAll([
+    '.brand','.logo','.site-logo','.nav-logo','.portal-logo','.student-brand',
+    '.trainer-brand','.admin-brand','.sidebar-brand','header [class*="logo"]',
+    'header [class*="brand"]','aside [class*="logo"]','aside [class*="brand"]'
+  ].join(',')));
+  document.querySelectorAll('header a,nav a,aside a').forEach(el=>{
+    const label=(el.textContent||'').trim().replace(/\s+/g,' ').toLowerCase();
+    if(label==='tura'||label==='tura infotech'||label==='tura infotech & academy')candidates.add(el);
+  });
+  candidates.forEach(slot=>{
+    if(slot.closest('form,[data-logo-upload],.settings-branding,.logo-preview'))return;
+    if(slot.querySelector('img.tura-official-logo'))return;
+    const label=(slot.textContent||'').trim();
+    const img=document.createElement('img');img.src=src;img.alt='TURA Infotech & Academy';img.className='tura-official-logo';
+    slot.replaceChildren(img);slot.setAttribute('aria-label',label||'TURA Infotech & Academy');
+  });
+}
+const officialLogoObserver=new MutationObserver(()=>queueMicrotask(applyOfficialTuraLogo));
+officialLogoObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
+window.addEventListener('hashchange',()=>queueMicrotask(()=>queueMicrotask(applyOfficialTuraLogo)));
+queueMicrotask(()=>queueMicrotask(applyOfficialTuraLogo));
+
 // Admin tools are browser-local planning tools, not authenticated operations.
 const adminTabs=[['overview','Dashboard'],['courses','Courses'],['students','Students'],['trainers','Trainers'],['bookings','Demo bookings'],['orders','Orders'],['payments','Payments'],['offers','Offers'],['testimonials','Testimonials'],['careers','Careers'],['analytics','Analytics'],['support','Support'],['settings','Settings']];
 const adminDraftDefinitions={courses:{label:'course',heading:'Shape the learning catalogue.',description:'Prepare course proposals for review before publishing.',fields:[['title','Course title','text',true],['category','Category','select',true,['Design','Data','Agile','Other']],['description','Course summary','textarea',true]]},trainers:{label:'trainer requirement',heading:'Plan your teaching team.',description:'Draft trainer requirements without creating accounts or access grants.',fields:[['title','Role or expertise needed','text',true],['course','Learning path','course',true],['description','Experience and teaching requirements','textarea',true]]},offers:{label:'offer proposal',heading:'Give new learners a thoughtful start.',description:'Prepare promotional ideas for approval. Drafts do not change checkout prices.',fields:[['title','Offer name','text',true],['code','Proposed code','text',true],['discount','Proposed discount (%)','number',true],['date','Planned expiry date','date',true],['description','Eligibility and terms','textarea',true]]},testimonials:{label:'testimonial draft',heading:'Make room for learner stories.',description:'Prepare verified, consented reviews for editorial review. Nothing is published here.',fields:[['title','Reviewer display name','text',true],['course','Learning path','course',true],['description','Approved review text','textarea',true],['consent','Consent or source reference','text',true]]},careers:{label:'job draft',heading:'Plan the next opportunity.',description:'Prepare role descriptions for review before accepting applications.',fields:[['title','Role title','text',true],['location','Location or remote arrangement','text',true],['type','Employment type','select',true,['Full-time','Part-time','Contract','Internship']],['description','Responsibilities and requirements','textarea',true]]},support:{label:'support note',heading:'Keep the next action clear.',description:'Track local planning notes. These are not submitted customer tickets.',fields:[['title','Note subject','text',true],['priority','Priority','select',true,['Normal','High','Low']],['description','Issue context and next action','textarea',true]]}};
