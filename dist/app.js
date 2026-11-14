@@ -2238,7 +2238,7 @@ queueMicrotask(()=>queueMicrotask(hideAdminEntryOutsideAdmin));
 
 // Apply the supplied official logo to navigation brand slots across all portals.
 function applyOfficialTuraLogo(){
-  const src='assets/tura-logo.png';
+  const src='assets/tura-logo.png?v=20261114-1';
   let favicon=document.querySelector('link[rel="icon"]');if(!favicon){favicon=document.createElement('link');favicon.rel='icon';document.head.append(favicon)}favicon.type='image/png';favicon.href=src;
   const candidates=new Set(document.querySelectorAll([
     '.brand','.logo','.site-logo','.nav-logo','.portal-logo','.student-brand',
