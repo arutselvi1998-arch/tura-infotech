@@ -2383,3 +2383,10 @@ function reliablePortalRender(){
 }
 function scheduleReliablePortal(){setTimeout(reliablePortalRender,80)}
 window.addEventListener('hashchange',scheduleReliablePortal);scheduleReliablePortal();
+
+// Upgrade every legacy hero slot to the high-resolution asset, including
+// content inserted by route renderers after initial page load.
+function applyHighResolutionHero(){document.querySelectorAll('img[src="assets/hero.jpeg"]').forEach(img=>{img.src='assets/hero-hd.png';img.decoding='async'})}
+const highResolutionHeroObserver=new MutationObserver(()=>queueMicrotask(applyHighResolutionHero));
+highResolutionHeroObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
+window.addEventListener('hashchange',()=>queueMicrotask(applyHighResolutionHero));queueMicrotask(applyHighResolutionHero);
