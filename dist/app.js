@@ -73,7 +73,7 @@ function homeReferenceRender(){
  const h1=hero.querySelector('h1');h1.innerHTML='Upgrade Your Skills<br><span class="accent">Build Your Career</span>';
  hero.querySelector('.pill').textContent='✦ Practical IT Learning';
  hero.querySelector('.hero-inner>div>p').textContent='Job-oriented IT learning paths with practical projects. Build your skills and explore your next career step.';
- const actions=hero.querySelector('.actions');actions.querySelector('.button').textContent='Book a Free Demo →';actions.querySelector('.secondary').textContent='Explore Courses';
+ const actions=hero.querySelector('.actions');actions.querySelector('.button').innerHTML='<span class="cta-icon" aria-hidden="true">▣</span> Book a Free Demo';actions.querySelector('.button').setAttribute('aria-label','Book a Free Demo');actions.querySelector('.secondary').textContent='Explore Courses';
  const featureItems=[['◈','Industry-relevant skills'],['▧','Live & recorded paths'],['✦','Real-world projects'],['▦','Career-focused learning']];
  const capabilities=document.createElement('div');capabilities.className='hero-capabilities';capabilities.innerHTML=featureItems.map(([icon,label])=>`<div><span>${icon}</span><b>${label}</b></div>`).join('');
  hero.querySelector('.hero-inner>div').append(capabilities);
