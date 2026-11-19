@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Sign in or create a TURA Infotech & Academy student account.">
+  <title>Sign in — Tura Infotech</title>
+  <script>
+    const siteBase=document.createElement('base');
+    siteBase.href=location.pathname.includes('/tura-infotech/')?'/tura-infotech/':'/';
+    document.head.append(siteBase);
+    if(!location.hash||!/^#auth(?:\/|$)/.test(location.hash))location.replace(location.pathname+location.search+'#auth/signin');
+  </script>
+  <link rel="stylesheet" href="style.css?v=20261119-1">
+</head>
+<body>
+  <div class="announcement">TURA Infotech & Academy</div>
+  <header>
+    <a href="index.html#home" class="logo" aria-label="TURA Infotech & Academy"><img class="tura-official-logo" src="assets/tura-logo.png?v=20261119-1" alt="TURA Infotech & Academy"></a>
+    <button id="menu" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <nav><a href="index.html#home">Home</a></nav>
+    <div class="tools"><a href="#cart" id="bag" aria-label="Shopping cart">🛒 Cart (0)</a></div>
+  </header>
+  <main id="app"></main>
+  <footer><div class="footer-bottom"><span>© <span id="year"></span> Tura Infotech</span></div></footer>
+  <div id="toast" role="status"></div>
+  <script src="routes.js?v=20261119-1"></script>
+  <script src="app.js?v=20261119-1"></script>
+</body>
+</html>
