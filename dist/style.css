@@ -18,3 +18,24 @@ body:not(.student-reference-view):not(.admin-academy-view):not(.trainer-referenc
 @media(max-width:1000px){body:not(.student-reference-view):not(.admin-academy-view):not(.trainer-reference-view)>header>a.logo{flex-basis:145px!important;width:145px!important;min-width:145px!important;height:96px!important}body:not(.student-reference-view):not(.admin-academy-view):not(.trainer-reference-view)>header>a.logo>.tura-official-logo{width:135px!important;min-width:135px!important;height:92px!important}}
 @media(max-width:640px){body:not(.student-reference-view):not(.admin-academy-view):not(.trainer-reference-view)>header>a.logo{flex-basis:120px!important;width:120px!important;min-width:120px!important;height:78px!important}body:not(.student-reference-view):not(.admin-academy-view):not(.trainer-reference-view)>header>a.logo>.tura-official-logo{width:112px!important;min-width:112px!important;height:74px!important}}
 .button .cta-icon{display:inline-grid;place-items:center;width:18px;height:18px;border:2px solid currentColor;border-radius:3px;font-size:0;position:relative;flex:0 0 18px}.button .cta-icon:before,.button .cta-icon:after{content:'';position:absolute}.button .cta-icon:before{left:2px;right:2px;top:4px;border-top:2px solid currentColor}.button .cta-icon:after{width:3px;height:3px;left:4px;top:8px;background:currentColor;box-shadow:5px 0 0 currentColor,0 4px 0 currentColor,5px 4px 0 currentColor}
+
+/* Readability baseline: public site, authentication, user portal and admin portal. */
+body{font-size:16px;line-height:1.55}
+p,li,summary,label,input,select,textarea,button{font-size:16px}
+header nav a,.tools a,.announcement,.footer-bottom,.footer-top{font-size:15px}
+.button{font-size:15px;line-height:1.2}
+.eyebrow,.form-note,.notice,.status{font-size:14px}
+.auth-context,.auth-sub,.auth-hint,.auth-check,.auth-bottom,.auth-forgot,.auth-error,.auth-demo-code,.auth-role small,.auth-next a,.auth-form label,.auth-form input,.auth-phone>span,.auth-password button,.auth-social button,.auth-divider span,.auth-stage-links{font-size:14px!important}
+.auth-shell h1{font-size:28px!important}.auth-role b{font-size:17px!important}.auth-role small{line-height:1.55!important}.auth-form input{padding:14px!important}.auth-form .button{font-size:16px!important;padding:14px!important}
+.student-side nav a,.student-notice,.student-main p,.student-main li,.student-main label,.student-main input,.student-main select,.student-main textarea,.student-main button,.student-main small,.student-mobile-nav a{font-size:14px!important}
+.student-main h3{font-size:18px!important}.student-main h2{font-size:24px!important}
+.admin-nav a,.admin-main p,.admin-main li,.admin-main label,.admin-main input,.admin-main select,.admin-main textarea,.admin-main button,.admin-main small{font-size:14px!important}
+.admin-main h3{font-size:18px!important}.admin-main h2{font-size:24px!important}
+.rp-role,.rp-nav a,.rp-search,.rp-user,.rp-notice,.rp-hero p,.rp-stat small,.rp-row,.rp-row small,.rp-actions a{font-size:14px!important}.rp-panel h3{font-size:18px!important}.rp-top h1{font-size:22px!important}
+@media(max-width:560px){body{font-size:16px}header nav a,.tools a{font-size:15px}.auth-context,.auth-sub,.auth-hint,.auth-check,.auth-bottom{font-size:14px!important}}
+
+body.home-reference-view nav,body.home-reference-view nav a,body.home-reference-view .tools,body.home-reference-view .tools a{font-size:16px!important}
+body.home-reference-view #app p,body.home-reference-view #app li,body.home-reference-view #app summary{font-size:16px!important;line-height:1.6!important}
+body.home-reference-view #app .pill,body.home-reference-view #app .eyebrow,body.home-reference-view #app small,body.home-reference-view #app .meta,body.home-reference-view #app .text-link,body.home-reference-view #app .hero-capabilities>div,body.home-reference-view #app .hero-capabilities b,body.home-reference-view #app .hero-badges>div,body.home-reference-view #app .benefits span{font-size:14px!important;line-height:1.45!important}
+body.home-reference-view #app .button{font-size:15px!important}
+body.home-reference-view #app .course h3,body.home-reference-view #app .features h3,body.home-reference-view #app .benefits b{font-size:16px!important}
