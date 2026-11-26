@@ -2596,3 +2596,25 @@ const primaryCtaIconObserver=new MutationObserver(()=>queueMicrotask(applyPrimar
 primaryCtaIconObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
 window.addEventListener('hashchange',()=>queueMicrotask(applyPrimaryCtaIcons));
 queueMicrotask(applyPrimaryCtaIcons);
+
+// Testimonial layout uses clearly labelled sample feedback until verified,
+// consented learner reviews and photos are supplied.
+function applyLearnerTestimonials(){
+ if(!document.body.classList.contains('home-reference-view')||document.querySelector('.learner-testimonials'))return;
+ const journey=document.querySelector('.steps')?.closest('section');if(!journey)return;
+ const portraits=[
+  '<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="58" fill="#f9d7ea"/><path d="M30 106c5-24 18-34 30-34s25 10 30 34" fill="#8f45d8"/><circle cx="60" cy="52" r="25" fill="#d98d6c"/><path d="M34 51c0-24 13-35 29-35 19 0 29 15 26 39-8-8-14-18-17-27-7 13-21 19-38 23" fill="#39223e"/><circle cx="51" cy="53" r="2" fill="#312039"/><circle cx="69" cy="53" r="2" fill="#312039"/><path d="M53 63c5 4 9 4 14 0" fill="none" stroke="#8e3e4f" stroke-width="2" stroke-linecap="round"/></svg>',
+  '<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="58" fill="#e5dcfb"/><path d="M27 106c6-24 19-34 33-34s27 10 33 34" fill="#287fbf"/><circle cx="60" cy="51" r="25" fill="#b97455"/><path d="M36 49c0-23 12-34 27-34 17 0 27 11 27 33-7-4-13-12-16-20-10 11-22 17-38 21" fill="#2c2132"/><path d="M39 58c2 19 10 29 21 29s20-10 22-29" fill="#b97455"/><circle cx="51" cy="53" r="2" fill="#281e2d"/><circle cx="69" cy="53" r="2" fill="#281e2d"/><path d="M53 64c5 3 9 3 14 0" fill="none" stroke="#703842" stroke-width="2" stroke-linecap="round"/></svg>',
+  '<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="58" fill="#dff4ee"/><path d="M28 106c5-24 18-34 32-34s27 10 32 34" fill="#e44598"/><circle cx="60" cy="51" r="25" fill="#c88161"/><path d="M34 52c-1-24 12-38 29-38 20 0 31 15 28 40-5-6-10-15-12-24-10 13-24 20-45 22" fill="#422236"/><circle cx="51" cy="54" r="2" fill="#2e1d2a"/><circle cx="69" cy="54" r="2" fill="#2e1d2a"/><path d="M52 64c6 4 10 4 16 0" fill="none" stroke="#823949" stroke-width="2" stroke-linecap="round"/></svg>'
+ ];
+ const entries=[
+  ['Priya S.','Data Analytics learner','The guided exercises made it easier to understand how raw data can become a clear, useful dashboard.'],
+  ['Arun K.','UX/UI Design learner','The project-based approach helped me connect user research, wireframes and interface decisions in one workflow.'],
+  ['Meena V.','Scrum learner','The practical examples gave me a clearer understanding of Scrum events, team collaboration and facilitation.']
+ ];
+ const section=document.createElement('section');section.className='learner-testimonials';section.innerHTML=`<div class="container"><div class="testimonial-heading"><div><div class="eyebrow">LEARNER VOICES</div><h2>Learning experiences, in their own words.</h2><p>Illustrative feedback layout. Replace with verified, consented learner testimonials before public promotion.</p></div></div><div class="testimonial-grid">${entries.map((entry,index)=>`<article class="testimonial-card"><div class="testimonial-person"><div class="testimonial-avatar">${portraits[index]}</div><div><h3>${entry[0]}</h3><span>${entry[1]}</span><small>Sample feedback</small></div></div><div class="testimonial-stars" aria-label="Sample five-star presentation">★★★★★</div><blockquote>“${entry[2]}”</blockquote></article>`).join('')}</div></div>`;journey.insertAdjacentElement('afterend',section);
+}
+const testimonialObserver=new MutationObserver(()=>queueMicrotask(applyLearnerTestimonials));
+testimonialObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
+window.addEventListener('hashchange',()=>queueMicrotask(applyLearnerTestimonials));
+queueMicrotask(applyLearnerTestimonials);
