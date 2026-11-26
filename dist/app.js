@@ -2685,3 +2685,17 @@ const headerDemoIconObserver=new MutationObserver(()=>queueMicrotask(removeHeade
 headerDemoIconObserver.observe(document.querySelector('header')||document.body,{childList:true,subtree:true});
 window.addEventListener('hashchange',()=>queueMicrotask(removeHeaderDemoIcon));
 queueMicrotask(removeHeaderDemoIcon);
+
+// About action uses an information icon instead of a generic arrow.
+function applyAboutLinkIcon(){
+ document.querySelectorAll('a.text-link[href="#about"]').forEach(link=>{
+  if(link.querySelector('.about-link-icon'))return;
+  const label=(link.textContent||'Get to know Tura').replace(/[↗→]/g,'').trim();
+  link.replaceChildren(document.createTextNode(`${label} `));
+  const icon=document.createElement('span');icon.className='about-link-icon';icon.setAttribute('aria-hidden','true');icon.innerHTML='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5h.01"/></svg>';link.append(icon);
+ });
+}
+const aboutLinkIconObserver=new MutationObserver(()=>queueMicrotask(applyAboutLinkIcon));
+aboutLinkIconObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
+window.addEventListener('hashchange',()=>queueMicrotask(applyAboutLinkIcon));
+queueMicrotask(applyAboutLinkIcon);
