@@ -2618,3 +2618,21 @@ const testimonialObserver=new MutationObserver(()=>queueMicrotask(applyLearnerTe
 testimonialObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
 window.addEventListener('hashchange',()=>queueMicrotask(applyLearnerTestimonials));
 queueMicrotask(applyLearnerTestimonials);
+
+// Resolve legacy home-reference decorations that compete with the current UI.
+function cleanHomeComposition(){
+ if(!document.body.classList.contains('home-reference-view'))return;
+ document.querySelectorAll('.hero-capabilities,.hero-badges').forEach(element=>element.remove());
+ applyBenefitIllustrations();applyCourseMetaBadges();applyCourseNavigationButtons();
+ document.querySelectorAll('.course').forEach(card=>{
+  const href=card.querySelector('a[href^="#course/"]')?.getAttribute('href')||'',id=href.split('/')[1],art=card.querySelector('.course-art');
+  if(art&&!art.querySelector('.course-artwork')&&courseArtwork(id)){
+   art.querySelector('strong')?.remove();
+   const artwork=document.createElement('div');artwork.className='course-artwork';artwork.innerHTML=courseArtwork(id);art.append(artwork);
+  }
+ });
+}
+const homeCompositionObserver=new MutationObserver(()=>queueMicrotask(cleanHomeComposition));
+homeCompositionObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
+window.addEventListener('hashchange',()=>queueMicrotask(cleanHomeComposition));
+queueMicrotask(cleanHomeComposition);
