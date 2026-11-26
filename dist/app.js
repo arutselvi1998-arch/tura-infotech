@@ -2501,3 +2501,16 @@ if(adminCourseWorkspace&&Array.isArray(adminCourseWorkspace.courses)){
  if(migrated)write('tura-admin-course-workspace',adminCourseWorkspace);
 }
 render();
+
+// Present course delivery details as clear icon badges instead of text glyphs.
+function applyCourseMetaBadges(){
+ document.querySelectorAll('.course .meta').forEach(meta=>{
+  if(meta.classList.contains('course-meta-enhanced'))return;
+  meta.classList.add('course-meta-enhanced');
+  meta.innerHTML='<span><i class="course-meta-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="3"/><path d="M3.5 19c.4-5 2.2-7 5.5-7s5.1 2 5.5 7M16 8h5v9h-4"/><path d="m17 12 1.5 1.5L21 11"/></svg></i>Instructor-led</span><span><i class="course-meta-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 6h7l2 2h9v11H3z"/><path d="m8 14 2 2 5-5"/></svg></i>Project focused</span>';
+ });
+}
+const courseMetaObserver=new MutationObserver(()=>queueMicrotask(applyCourseMetaBadges));
+courseMetaObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
+window.addEventListener('hashchange',()=>queueMicrotask(applyCourseMetaBadges));
+queueMicrotask(applyCourseMetaBadges);
