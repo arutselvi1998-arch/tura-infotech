@@ -2473,3 +2473,13 @@ const courseLinkIconObserver=new MutationObserver(()=>queueMicrotask(applyCourse
 courseLinkIconObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
 window.addEventListener('hashchange',()=>queueMicrotask(applyCourseLinkIcon));
 queueMicrotask(applyCourseLinkIcon);
+
+// Clear, outcome-focused descriptions shared by home, courses and detail views.
+const improvedCourseDescriptions={
+ 'ux-ui':'Learn user research, wireframing, interface design and interactive prototyping to create accessible, user-friendly digital experiences.',
+ 'data-analytics':'Develop practical skills in Excel, SQL, data preparation and dashboard creation to turn raw information into meaningful business insights.',
+ 'data-engineering':'Build a foundation in databases, data modelling, ETL processes and cloud pipelines for creating reliable, scalable data systems.',
+ 'scrum-master':'Understand Scrum roles, events and artefacts while developing the facilitation and leadership skills needed to support effective Agile teams.'
+};
+courses.forEach(course=>{if(improvedCourseDescriptions[course.id])course.desc=improvedCourseDescriptions[course.id]});
+render();
