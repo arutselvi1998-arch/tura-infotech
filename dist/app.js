@@ -2514,3 +2514,17 @@ const courseMetaObserver=new MutationObserver(()=>queueMicrotask(applyCourseMeta
 courseMetaObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
 window.addEventListener('hashchange',()=>queueMicrotask(applyCourseMetaBadges));
 queueMicrotask(applyCourseMetaBadges);
+
+// Make each course destination explicit and easy to activate.
+function applyCourseNavigationButtons(){
+ document.querySelectorAll('.course .course-bottom').forEach(link=>{
+  if(link.classList.contains('course-navigation-button'))return;
+  link.classList.add('course-navigation-button');
+  link.setAttribute('aria-label',`View course details for ${link.closest('.course')?.querySelector('h3')?.textContent?.trim()||'this course'}`);
+  link.innerHTML='<span class="course-navigation-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v16H6.5A2.5 2.5 0 0 0 4 21.5zm16 0A2.5 2.5 0 0 0 17.5 3H13v16h4.5a2.5 2.5 0 0 1 2.5 2.5z"/></svg></span><span>View course details</span>';
+ });
+}
+const courseNavigationObserver=new MutationObserver(()=>queueMicrotask(applyCourseNavigationButtons));
+courseNavigationObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
+window.addEventListener('hashchange',()=>queueMicrotask(applyCourseNavigationButtons));
+queueMicrotask(applyCourseNavigationButtons);
