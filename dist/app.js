@@ -2717,3 +2717,16 @@ const demoFormIconObserver=new MutationObserver(()=>queueMicrotask(applyDemoForm
 demoFormIconObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
 window.addEventListener('hashchange',()=>queueMicrotask(applyDemoFormIcons));
 queueMicrotask(applyDemoFormIcons);
+
+// Course selection cards use relevant illustrations instead of abstract glyphs.
+function applyDemoCourseIllustrations(){
+ document.querySelectorAll('.demo-course-option').forEach(option=>{
+  const id=option.querySelector('input[name="course"]')?.value,icon=option.querySelector('.demo-course-icon');
+  if(!id||!icon||!courseArtwork(id)||icon.querySelector('.demo-course-artwork'))return;
+  icon.innerHTML=`<span class="demo-course-artwork">${courseArtwork(id)}</span>`;
+ });
+}
+const demoCourseArtworkObserver=new MutationObserver(()=>queueMicrotask(applyDemoCourseIllustrations));
+demoCourseArtworkObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
+window.addEventListener('hashchange',()=>queueMicrotask(applyDemoCourseIllustrations));
+queueMicrotask(applyDemoCourseIllustrations);
