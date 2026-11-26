@@ -2622,6 +2622,7 @@ queueMicrotask(applyLearnerTestimonials);
 // Resolve legacy home-reference decorations that compete with the current UI.
 function cleanHomeComposition(){
  if(!document.body.classList.contains('home-reference-view'))return;
+ enforceCanonicalHomeHero();
  document.querySelectorAll('.hero-capabilities,.hero-badges,.home-proof-heading,.home-proof-items,.home-stories').forEach(element=>element.remove());
  applyBenefitIllustrations();applyCourseMetaBadges();applyCourseNavigationButtons();applyPrimaryCtaIcons();
  document.querySelectorAll('a.button[href="#demo"],button[data-demo]').forEach(control=>{
@@ -2645,3 +2646,27 @@ const homeCompositionObserver=new MutationObserver(()=>queueMicrotask(cleanHomeC
 homeCompositionObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
 window.addEventListener('hashchange',()=>queueMicrotask(cleanHomeComposition));
 queueMicrotask(cleanHomeComposition);
+
+// One canonical home hero replaces the competing base/reference banner states.
+function enforceCanonicalHomeHero(){
+ const hero=document.querySelector('.hero'),copy=hero?.querySelector('.hero-inner>div:first-child');if(!hero||!copy)return;
+ const pill=copy.querySelector('.pill'),heading=copy.querySelector('h1'),description=copy.querySelector('p'),image=hero.querySelector('.hero-art img');
+ if(pill&&pill.textContent!=='PRACTICAL IT LEARNING')pill.textContent='PRACTICAL IT LEARNING';
+ const canonicalHeading='Upgrade Your Skills<br><span class="accent">Build Your Career</span>';
+ if(heading&&heading.innerHTML!==canonicalHeading)heading.innerHTML=canonicalHeading;
+ const canonicalDescription='Job-oriented IT learning paths with practical projects. Build useful skills and take your next career step with confidence.';
+ if(description&&description.textContent!==canonicalDescription)description.textContent=canonicalDescription;
+ hero.classList.add('canonical-home-hero');
+ hero.querySelectorAll('.hero-badges,.hero-capabilities,.note').forEach(element=>element.remove());
+ if(image){image.src='assets/hero-hd.png';image.alt='Learner building practical technology skills with TURA Infotech & Academy'}
+ const actions=copy.querySelector('.actions');if(actions){
+  const demo=actions.querySelector('a[href="#demo"]'),coursesLink=actions.querySelector('a[href="#courses"]');
+  if(demo&&!demo.textContent.includes('Book a free demo')){demo.replaceChildren(document.createTextNode('Book a free demo'));delete demo.dataset.primaryCtaIcon}
+  if(coursesLink&&coursesLink.textContent.trim()!=='Explore courses')coursesLink.textContent='Explore courses';
+ }
+ applyPrimaryCtaIcons();
+}
+const canonicalHeroObserver=new MutationObserver(()=>queueMicrotask(enforceCanonicalHomeHero));
+canonicalHeroObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true,characterData:true});
+window.addEventListener('hashchange',()=>queueMicrotask(enforceCanonicalHomeHero));
+queueMicrotask(enforceCanonicalHomeHero);
