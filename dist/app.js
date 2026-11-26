@@ -2431,3 +2431,22 @@ const demoIconObserver=new MutationObserver(()=>queueMicrotask(applyDemoActionIc
 demoIconObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
 window.addEventListener('hashchange',()=>queueMicrotask(applyDemoActionIcons));
 queueMicrotask(applyDemoActionIcons);
+
+// Replace the benefit row's typographic symbols with crisp, scalable
+// illustrations that remain sharp on high-density desktop and mobile screens.
+function applyBenefitIllustrations(){
+ const cards=document.querySelectorAll('.benefits>div');
+ if(cards.length!==4||cards[0].querySelector('.benefit-art'))return;
+ const artwork=[
+  '<svg viewBox="0 0 64 64"><path d="M12 48h40M18 42V21h28v21m-22 10 6 6 11-13"/><circle cx="46" cy="16" r="7"/></svg>',
+  '<svg viewBox="0 0 64 64"><circle cx="25" cy="19" r="8"/><path d="M10 48c1-11 7-17 15-17s14 6 15 17m3-29h11v25H42m3-13 4 4 7-9"/></svg>',
+  '<svg viewBox="0 0 64 64"><path d="M12 18h17l5 6h18v27H12zm11 21 6 6 13-14M18 18v-6h15l5 6"/></svg>',
+  '<svg viewBox="0 0 64 64"><path d="m12 50 16-16 9 8 15-22M42 20h10v10"/><circle cx="18" cy="19" r="7"/><path d="M9 37c1-7 4-11 9-11s8 4 9 11"/></svg>'
+ ];
+ const labels=[['Practical learning','Make knowledge tangible'],['Instructor-led paths','Learn with direction'],['Project-based practice','Build as you learn'],['Career-focused skills','Prepare for your next step']];
+ cards.forEach((card,index)=>{card.innerHTML=`<div class="benefit-art benefit-art-${index+1}" aria-hidden="true">${artwork[index]}</div><div class="benefit-copy"><b>${labels[index][0]}</b><span>${labels[index][1]}</span></div>`});
+}
+const benefitArtObserver=new MutationObserver(()=>queueMicrotask(applyBenefitIllustrations));
+benefitArtObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
+window.addEventListener('hashchange',()=>queueMicrotask(applyBenefitIllustrations));
+queueMicrotask(applyBenefitIllustrations);
