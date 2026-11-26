@@ -2482,4 +2482,22 @@ const improvedCourseDescriptions={
  'scrum-master':'Understand Scrum roles, events and artefacts while developing the facilitation and leadership skills needed to support effective Agile teams.'
 };
 courses.forEach(course=>{if(improvedCourseDescriptions[course.id])course.desc=improvedCourseDescriptions[course.id]});
+// Bring untouched Admin course previews forward to the approved public copy.
+// Manually edited Admin descriptions are preserved.
+const legacyCourseDescriptions={
+ 'ux-ui':'Turn ideas into thoughtful digital experiences. Build your foundations in research, interfaces and prototyping.',
+ 'data-analytics':'Find the story behind the numbers. Explore data, create dashboards and communicate useful insights.',
+ 'data-engineering':'Learn how data moves. Explore pipelines, databases and the foundations of reliable data systems.',
+ 'scrum-master':'Help teams work better together. Understand Scrum, facilitation and continuous improvement.'
+};
+const adminCourseWorkspace=read('tura-admin-course-workspace',null);
+if(adminCourseWorkspace&&Array.isArray(adminCourseWorkspace.courses)){
+ let migrated=false;
+ adminCourseWorkspace.courses.forEach(course=>{
+  if(improvedCourseDescriptions[course.id]&&(!course.description||course.description===legacyCourseDescriptions[course.id])){
+   course.description=improvedCourseDescriptions[course.id];migrated=true;
+  }
+ });
+ if(migrated)write('tura-admin-course-workspace',adminCourseWorkspace);
+}
 render();
