@@ -2699,3 +2699,21 @@ const aboutLinkIconObserver=new MutationObserver(()=>queueMicrotask(applyAboutLi
 aboutLinkIconObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
 window.addEventListener('hashchange',()=>queueMicrotask(applyAboutLinkIcon));
 queueMicrotask(applyAboutLinkIcon);
+
+// Demo page navigation and save actions use descriptive icons.
+function applyDemoFormIcons(){
+ const saved=document.querySelector('a.text-link[href="#bookings"]');
+ if(saved&&!saved.querySelector('.saved-request-icon')){
+  const label=(saved.textContent||'View my saved requests').replace(/[↗→]/g,'').trim();saved.replaceChildren(document.createTextNode(`${label} `));
+  const icon=document.createElement('span');icon.className='saved-request-icon';icon.setAttribute('aria-hidden','true');icon.innerHTML='<svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h5"/><path d="m15 16 1.5 1.5L20 14"/></svg>';saved.append(icon);
+ }
+ const submit=document.querySelector('#demo-form button[type="submit"],#demo-form button:not([type])');
+ if(submit&&!submit.querySelector('.demo-save-icon')){
+  const label=(submit.textContent||'Save demo request').replace(/[↗→▣□▧◫]/g,'').trim();submit.replaceChildren();
+  const icon=document.createElement('span');icon.className='demo-save-icon';icon.setAttribute('aria-hidden','true');icon.innerHTML='<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 10h18"/><path d="m8 15 2.5 2.5L16 12"/></svg>';submit.append(icon,document.createTextNode(label));
+ }
+}
+const demoFormIconObserver=new MutationObserver(()=>queueMicrotask(applyDemoFormIcons));
+demoFormIconObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
+window.addEventListener('hashchange',()=>queueMicrotask(applyDemoFormIcons));
+queueMicrotask(applyDemoFormIcons);
