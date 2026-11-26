@@ -2560,3 +2560,20 @@ const whyTuraIconObserver=new MutationObserver(()=>queueMicrotask(applyWhyTuraIc
 whyTuraIconObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
 window.addEventListener('hashchange',()=>queueMicrotask(applyWhyTuraIcons));
 queueMicrotask(applyWhyTuraIcons);
+
+// Add a visual story to each stage of the learner journey.
+function applyJourneyIllustrations(){
+ const artwork=[
+  '<svg viewBox="0 0 180 110"><circle cx="48" cy="53" r="27" fill="#f9cae7"/><circle cx="48" cy="53" r="16" fill="#fff"/><path d="m67 72 25 24" stroke="#391556" stroke-width="8" stroke-linecap="round"/><path d="M41 45h14M41 53h9M41 61h12" stroke="#dc278f" stroke-width="4" stroke-linecap="round"/><path d="M110 26h45v57h-45z" fill="#fff" stroke="#9145da" stroke-width="4"/><path d="m120 70 10-13 8 7 10-20" fill="none" stroke="#e92b95" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  '<svg viewBox="0 0 180 110"><rect x="28" y="18" width="95" height="66" rx="9" fill="#fff" stroke="#8a44dc" stroke-width="4"/><path d="M57 93h38M76 84v9" stroke="#3a1754" stroke-width="5" stroke-linecap="round"/><circle cx="76" cy="51" r="16" fill="#f7c8e5"/><path d="M69 50c3 4 11 4 14 0M62 72c4-11 24-11 28 0" fill="none" stroke="#d62291" stroke-width="4" stroke-linecap="round"/><path d="M126 40h28a7 7 0 0 1 7 7v18a7 7 0 0 1-7 7h-8l-8 9v-9h-12a7 7 0 0 1-7-7V47a7 7 0 0 1 7-7" fill="#b54ae0"/><circle cx="132" cy="56" r="3" fill="#fff"/><circle cx="140" cy="56" r="3" fill="#fff"/><circle cx="148" cy="56" r="3" fill="#fff"/></svg>',
+  '<svg viewBox="0 0 180 110"><path d="M28 88h124" stroke="#3a1754" stroke-width="5" stroke-linecap="round"/><path d="M46 87V57h22v30M81 87V42h22v45M116 87V25h22v62" fill="#f8cce6" stroke="#d92391" stroke-width="4"/><path d="m41 49 34-24 24 12 40-25" fill="none" stroke="#7544da" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M128 12h11v11" fill="none" stroke="#7544da" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="44" cy="49" r="7" fill="#54b89e"/></svg>'
+ ];
+ document.querySelectorAll('body.home-reference-view .steps article').forEach((step,index)=>{
+  if(step.querySelector('.journey-illustration')||!artwork[index])return;
+  const illustration=document.createElement('div');illustration.className=`journey-illustration journey-illustration-${index+1}`;illustration.setAttribute('aria-hidden','true');illustration.innerHTML=artwork[index];step.prepend(illustration);
+ });
+}
+const journeyIllustrationObserver=new MutationObserver(()=>queueMicrotask(applyJourneyIllustrations));
+journeyIllustrationObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
+window.addEventListener('hashchange',()=>queueMicrotask(applyJourneyIllustrations));
+queueMicrotask(applyJourneyIllustrations);
