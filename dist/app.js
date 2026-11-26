@@ -2542,3 +2542,21 @@ const demoArrowObserver=new MutationObserver(()=>queueMicrotask(removeDemoArrowG
 demoArrowObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true,characterData:true});
 window.addEventListener('hashchange',()=>queueMicrotask(removeDemoArrowGlyphs));
 queueMicrotask(removeDemoArrowGlyphs);
+
+// Give the Why Tura feature cards meaningful, consistent vector icons.
+function applyWhyTuraIcons(){
+ const icons=[
+  '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="m15 9 5-5m-4 0h4v4"/></svg>',
+  '<svg viewBox="0 0 24 24"><path d="m4 17 6-6 3 3 7-7"/><path d="M15 7h5v5"/><path d="M4 21h16"/></svg>',
+  '<svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 3-6.2"/><path d="M4 4v6h6"/><path d="M12 8v4l3 2"/></svg>',
+  '<svg viewBox="0 0 24 24"><path d="M5 19 19 5M10 5h9v9"/><path d="M5 8v11h11"/></svg>'
+ ];
+ document.querySelectorAll('section.pale .features article .feature-icon').forEach((icon,index)=>{
+  if(icon.querySelector('svg')||!icons[index])return;
+  icon.innerHTML=icons[index];icon.classList.add(`why-icon-${index+1}`);
+ });
+}
+const whyTuraIconObserver=new MutationObserver(()=>queueMicrotask(applyWhyTuraIcons));
+whyTuraIconObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
+window.addEventListener('hashchange',()=>queueMicrotask(applyWhyTuraIcons));
+queueMicrotask(applyWhyTuraIcons);
