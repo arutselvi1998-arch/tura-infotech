@@ -2450,3 +2450,20 @@ const benefitArtObserver=new MutationObserver(()=>queueMicrotask(applyBenefitIll
 benefitArtObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
 window.addEventListener('hashchange',()=>queueMicrotask(applyBenefitIllustrations));
 queueMicrotask(applyBenefitIllustrations);
+
+// Use a recognisable course catalogue icon for the All courses action.
+function applyCourseLinkIcon(){
+ document.querySelectorAll('a.text-link[href="#courses"]').forEach(link=>{
+  if(link.querySelector('.course-link-icon'))return;
+  const label=(link.textContent||'All courses').replace(/[â†—â†’↗→]/g,'').trim();
+  link.replaceChildren(document.createTextNode(`${label} `));
+  const icon=document.createElement('span');
+  icon.className='course-link-icon';icon.setAttribute('aria-hidden','true');
+  icon.innerHTML='<svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v16H6.5A2.5 2.5 0 0 0 4 21.5zm16 0A2.5 2.5 0 0 0 17.5 3H13v16h4.5a2.5 2.5 0 0 1 2.5 2.5z"/></svg>';
+  link.append(icon);
+ });
+}
+const courseLinkIconObserver=new MutationObserver(()=>queueMicrotask(applyCourseLinkIcon));
+courseLinkIconObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
+window.addEventListener('hashchange',()=>queueMicrotask(applyCourseLinkIcon));
+queueMicrotask(applyCourseLinkIcon);
