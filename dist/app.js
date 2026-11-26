@@ -2670,3 +2670,15 @@ const canonicalHeroObserver=new MutationObserver(()=>queueMicrotask(enforceCanon
 canonicalHeroObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true,characterData:true});
 window.addEventListener('hashchange',()=>queueMicrotask(enforceCanonicalHomeHero));
 queueMicrotask(enforceCanonicalHomeHero);
+
+// Header navigation uses a simple text label; CTA icons stay on action buttons.
+function removeHeaderDemoIcon(){
+ document.querySelectorAll('header nav a[href="#demo"]').forEach(link=>{
+  link.querySelectorAll('.demo-calendar-icon,.cta-icon,.action-cta-icon').forEach(icon=>icon.remove());
+  [...link.childNodes].filter(node=>node.nodeType===Node.TEXT_NODE).forEach(node=>node.textContent=node.textContent.replace(/[▣□▧◫↗→]/g,'').trim());
+ });
+}
+const headerDemoIconObserver=new MutationObserver(()=>queueMicrotask(removeHeaderDemoIcon));
+headerDemoIconObserver.observe(document.querySelector('header')||document.body,{childList:true,subtree:true});
+window.addEventListener('hashchange',()=>queueMicrotask(removeHeaderDemoIcon));
+queueMicrotask(removeHeaderDemoIcon);
