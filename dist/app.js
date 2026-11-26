@@ -2414,6 +2414,9 @@ queueMicrotask(enforceTwoPortalExperience);
 
 // Demo actions use a recognisable calendar icon instead of a generic arrow.
 function applyDemoActionIcons(){
+ document.querySelectorAll('.hero .micro').forEach(message=>{
+  if(message.textContent!=='100% Placement Assistance')message.textContent='100% Placement Assistance';
+ });
  document.querySelectorAll('a[href="#demo"],button[data-demo]').forEach(control=>{
   if(control.querySelector('.demo-calendar-icon,.cta-icon'))return;
   const label=(control.textContent||'').replace(/[↗→]/g,'').trim();
