@@ -2577,3 +2577,22 @@ const journeyIllustrationObserver=new MutationObserver(()=>queueMicrotask(applyJ
 journeyIllustrationObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
 window.addEventListener('hashchange',()=>queueMicrotask(applyJourneyIllustrations));
 queueMicrotask(applyJourneyIllustrations);
+
+// Final CTA treatment: meaningful icons, no generic arrow glyphs.
+function applyPrimaryCtaIcons(){
+ const enhance=(control,type)=>{
+  if(control.dataset.primaryCtaIcon===type)return;
+  const label=(control.textContent||'').replace(/[↗→]/g,'').trim();
+  const svg=type==='demo'?'<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 10h18"/><path d="m9 15 2 2 4-4"/></svg>':'<svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="m14.5 14.5 5 5"/><path d="M8 8h4M8 11h3"/></svg>';
+  control.replaceChildren();
+  const icon=document.createElement('span');icon.className='cta-icon action-cta-icon';icon.setAttribute('aria-hidden','true');icon.innerHTML=svg;
+  control.append(icon,document.createTextNode(label));control.dataset.primaryCtaIcon=type;
+ };
+ document.querySelectorAll('a.button[href="#demo"],button[data-demo]').forEach(control=>enhance(control,'demo'));
+ document.querySelectorAll('.footer-top a.button[href="#courses"],.cta+footer a.button[href="#courses"]').forEach(control=>enhance(control,'course'));
+ document.querySelectorAll('footer a.button[href="#courses"]').forEach(control=>enhance(control,'course'));
+}
+const primaryCtaIconObserver=new MutationObserver(()=>queueMicrotask(applyPrimaryCtaIcons));
+primaryCtaIconObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
+window.addEventListener('hashchange',()=>queueMicrotask(applyPrimaryCtaIcons));
+queueMicrotask(applyPrimaryCtaIcons);
