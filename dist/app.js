@@ -2622,14 +2622,23 @@ queueMicrotask(applyLearnerTestimonials);
 // Resolve legacy home-reference decorations that compete with the current UI.
 function cleanHomeComposition(){
  if(!document.body.classList.contains('home-reference-view'))return;
- document.querySelectorAll('.hero-capabilities,.hero-badges').forEach(element=>element.remove());
- applyBenefitIllustrations();applyCourseMetaBadges();applyCourseNavigationButtons();
+ document.querySelectorAll('.hero-capabilities,.hero-badges,.home-proof-heading,.home-proof-items,.home-stories').forEach(element=>element.remove());
+ applyBenefitIllustrations();applyCourseMetaBadges();applyCourseNavigationButtons();applyPrimaryCtaIcons();
+ document.querySelectorAll('a.button[href="#demo"],button[data-demo]').forEach(control=>{
+  control.querySelectorAll('.demo-calendar-icon,.cta-icon:not(.action-cta-icon)').forEach(icon=>icon.remove());
+  [...control.childNodes].filter(node=>node.nodeType===Node.TEXT_NODE).forEach(node=>node.textContent=node.textContent.replace(/[↗→]/g,'').trimStart());
+  if(!control.querySelector('.action-cta-icon'))delete control.dataset.primaryCtaIcon;
+ });
  document.querySelectorAll('.course').forEach(card=>{
   const href=card.querySelector('a[href^="#course/"]')?.getAttribute('href')||'',id=href.split('/')[1],art=card.querySelector('.course-art');
   if(art&&!art.querySelector('.course-artwork')&&courseArtwork(id)){
    art.querySelector('strong')?.remove();
    const artwork=document.createElement('div');artwork.className='course-artwork';artwork.innerHTML=courseArtwork(id);art.append(artwork);
   }
+ });
+ document.querySelectorAll('.home-demo-card').forEach(card=>{
+  const id=card.querySelector('[data-demo]')?.dataset.demo,icon=card.querySelector('.home-demo-icon');
+  if(id&&icon&&courseArtwork(id)&&!icon.querySelector('.course-artwork'))icon.innerHTML=`<span class="course-artwork">${courseArtwork(id)}</span>`;
  });
 }
 const homeCompositionObserver=new MutationObserver(()=>queueMicrotask(cleanHomeComposition));
