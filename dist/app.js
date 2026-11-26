@@ -2528,3 +2528,17 @@ const courseNavigationObserver=new MutationObserver(()=>queueMicrotask(applyCour
 courseNavigationObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
 window.addEventListener('hashchange',()=>queueMicrotask(applyCourseNavigationButtons));
 queueMicrotask(applyCourseNavigationButtons);
+
+// Remove legacy arrow glyphs that can remain in demo labels after older cached renders.
+function removeDemoArrowGlyphs(){
+ document.querySelectorAll('a[href="#demo"],button[data-demo]').forEach(control=>{
+  [...control.childNodes].filter(node=>node.nodeType===Node.TEXT_NODE).forEach(node=>{
+   const cleaned=node.textContent.replace(/[↗→]/g,'');
+   if(cleaned!==node.textContent)node.textContent=cleaned;
+  });
+ });
+}
+const demoArrowObserver=new MutationObserver(()=>queueMicrotask(removeDemoArrowGlyphs));
+demoArrowObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true,characterData:true});
+window.addEventListener('hashchange',()=>queueMicrotask(removeDemoArrowGlyphs));
+queueMicrotask(removeDemoArrowGlyphs);
