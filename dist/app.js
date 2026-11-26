@@ -2411,3 +2411,20 @@ const twoPortalObserver=new MutationObserver(()=>queueMicrotask(enforceTwoPortal
 twoPortalObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
 window.addEventListener('hashchange',()=>{if(location.hash.startsWith('#trainer'))location.hash='dashboard';queueMicrotask(enforceTwoPortalExperience)});
 queueMicrotask(enforceTwoPortalExperience);
+
+// Demo actions use a recognisable calendar icon instead of a generic arrow.
+function applyDemoActionIcons(){
+ document.querySelectorAll('a[href="#demo"],button[data-demo]').forEach(control=>{
+  if(control.querySelector('.demo-calendar-icon,.cta-icon'))return;
+  const label=(control.textContent||'').replace(/[↗→]/g,'').trim();
+  if(!label)return;
+  const icon=document.createElement('span');
+  icon.className='demo-calendar-icon';
+  icon.setAttribute('aria-hidden','true');
+  control.replaceChildren(icon,document.createTextNode(` ${label}`));
+ });
+}
+const demoIconObserver=new MutationObserver(()=>queueMicrotask(applyDemoActionIcons));
+demoIconObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
+window.addEventListener('hashchange',()=>queueMicrotask(applyDemoActionIcons));
+queueMicrotask(applyDemoActionIcons);
