@@ -2730,3 +2730,58 @@ const demoCourseArtworkObserver=new MutationObserver(()=>queueMicrotask(applyDem
 demoCourseArtworkObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
 window.addEventListener('hashchange',()=>queueMicrotask(applyDemoCourseIllustrations));
 queueMicrotask(applyDemoCourseIllustrations);
+
+/* Persist demo requests rendered by the dynamic Book Demo page. */
+function installDemoBookingPersistence(){
+  const KEY='tura_demo_bookings_v1';
+  const read=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch{return []}};
+  const write=(value)=>localStorage.setItem(KEY,JSON.stringify(value));
+  const text=(value)=>String(value||'').trim();
+  const getField=(terms)=>[...document.querySelectorAll('input,select,textarea')].find((el)=>{
+    const label=el.id?document.querySelector(`label[for="${CSS.escape(el.id)}"]`):null;
+    const description=[el.name,el.id,el.placeholder,label?.textContent,el.closest('label')?.textContent].map(text).join(' ').toLowerCase();
+    return terms.some(term=>description.includes(term));
+  })?.value||'';
+  const findArea=()=>{
+    const heading=[...document.querySelectorAll('h1,h2,h3')].find(el=>/my demo bookings/i.test(el.textContent||''));
+    const section=heading&&(heading.closest('section')||heading.parentElement);
+    return section&&([...section.querySelectorAll('div')].find(el=>/no demo requests saved/i.test(el.textContent||''))||section.querySelector('.demo-bookings-list'));
+  };
+  const render=()=>{
+    const area=findArea(),items=read();
+    if(!area||!items.length)return;
+    area.classList.add('demo-bookings-list');
+    area.innerHTML=items.map((item,index)=>`<article class="demo-booking-card"><span class="demo-booking-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3v3m10-3v3M4 9h16M6 5h12a2 2 0 0 1 2 2v12H4V7a2 2 0 0 1 2-2Zm3 8h6m-6 3h4"/></svg></span><div><strong>${item.course||'Course demo'}</strong><p>${[item.date,item.time].filter(Boolean).join(' · ')||'Preferred schedule to be confirmed'}</p><small>${item.name||'Student'}${item.email?` · ${item.email}`:''}</small></div><button type="button" class="demo-booking-remove" data-demo-remove="${index}">Cancel</button></article>`).join('');
+  };
+  document.addEventListener('click',(event)=>{
+    const button=event.target.closest('button,a');if(!button)return;
+    const remove=button.getAttribute('data-demo-remove');
+    if(remove!==null){const items=read();items.splice(Number(remove),1);write(items);location.reload();return}
+    const label=text(button.textContent);
+    if(!/save demo request|confirm booking/i.test(label))return;
+    const item={id:Date.now(),course:text(getField(['course'])),date:text(getField(['date'])),time:text(getField(['time','slot'])),name:text(getField(['name'])),email:text(getField(['email'])),phone:text(getField(['phone','mobile']))};
+    const items=read();items.unshift(item);write(items.slice(0,20));setTimeout(render,0);
+  },true);
+  window.addEventListener('hashchange',()=>setTimeout(render,50));
+  new MutationObserver(render).observe(document.body,{childList:true,subtree:true});
+  render();
+}
+queueMicrotask(installDemoBookingPersistence);
+
+// Booking confirmation steps use clear visual cues.
+function applyBookingConfirmationIcons(){
+ const panel=document.querySelector('.demo-confirmation-strip');if(!panel)return;
+ const heading=panel.querySelector('h2');if(heading&&!heading.querySelector('.booking-confirm-icon')){
+  const label=heading.textContent.trim();heading.replaceChildren();const icon=document.createElement('span');icon.className='booking-confirm-icon';icon.setAttribute('aria-hidden','true');icon.innerHTML='<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 10h18"/><path d="m8 15 2.5 2.5L16 12"/></svg>';heading.append(icon,document.createTextNode(label));
+ }
+ const artwork=[
+  '<svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h5"/><path d="m13 16 2 2 4-5"/></svg>',
+  '<svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 3-6"/><path d="M4 4v6h6"/><path d="M12 8v4l3 2"/></svg>',
+  '<svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c.4-5 2-7 5-7s4.6 2 5 7m1-5c3-1 6 1 7 5"/><path d="m15 4 1.5 1.5L20 2"/></svg>'
+ ];
+ panel.querySelectorAll('.demo-followups>div').forEach((item,index)=>{if(item.querySelector('.booking-step-icon')||!artwork[index])return;const icon=document.createElement('span');icon.className=`booking-step-icon booking-step-icon-${index+1}`;icon.setAttribute('aria-hidden','true');icon.innerHTML=artwork[index];item.prepend(icon)});
+}
+const bookingConfirmationObserver=new MutationObserver(()=>queueMicrotask(applyBookingConfirmationIcons));
+bookingConfirmationObserver.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
+window.addEventListener('hashchange',()=>queueMicrotask(applyBookingConfirmationIcons));
+queueMicrotask(applyBookingConfirmationIcons);
