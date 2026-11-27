@@ -2809,10 +2809,8 @@ document.addEventListener('click',(event)=>{
   const label=(control.textContent||'').trim();
   if(/request your first demo/i.test(label)){
     event.preventDefault();
-    const target=[...document.querySelectorAll('h1,h2,h3')].find(el=>/choose (a )?course|book a (free )?demo/i.test(el.textContent||''))
-      ||document.querySelector('form');
-    target?.scrollIntoView({behavior:'smooth',block:'start'});
-    setTimeout(()=>document.querySelector('form input,form select,form button')?.focus(),450);
+    window.scrollTo({top:0,left:0,behavior:'smooth'});
+    setTimeout(()=>document.querySelector('form input,form select,form button')?.focus(),550);
   }
   if(/view all bookings/i.test(label)){
     event.preventDefault();
