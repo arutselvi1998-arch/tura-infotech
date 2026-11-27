@@ -2837,10 +2837,208 @@ function enlargeDemoBookingForm(){
   if(!choose)return;
   const container=choose.closest('section')||choose.parentElement?.parentElement?.parentElement;
   container?.classList.add('demo-booking-form-section');
+  if(container){
+    [...container.querySelectorAll('button,a')].filter(el=>/save demo request/i.test(el.textContent||'')).forEach(control=>{
+      if(control.classList.contains('save-demo-request-button'))return;
+      control.classList.add('save-demo-request-button');
+      control.innerHTML='<svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 10h18m4 5-5 5-3-3"/></svg><span>Save Demo Request</span>';
+    });
+  }
 }
 queueMicrotask(enlargeDemoBookingForm);
 window.addEventListener('hashchange',()=>setTimeout(enlargeDemoBookingForm,50));
 new MutationObserver(enlargeDemoBookingForm).observe(document.body,{childList:true,subtree:true});
+
+function upgradeAboutTuraPage(){
+  const eyebrow=[...document.querySelectorAll('p,span,div')].find(el=>/^\s*about tura\s*$/i.test(el.textContent||''));
+  if(!eyebrow)return;
+  const hero=eyebrow.closest('section')||eyebrow.parentElement;
+  if(!hero||hero.dataset.turaAboutUpgraded)return;
+  hero.dataset.turaAboutUpgraded='true';
+  hero.classList.add('tura-about-hero');
+  hero.innerHTML=`<div class="tura-about-copy"><span class="tura-section-label">About TURA</span><h1>Build skills. Gain confidence.<br><em>Move toward your career.</em></h1><p>TURA Infotech & Academy helps learners build job-relevant technology skills through instructor-led training, guided practice and real-world projects.</p><div class="tura-about-actions"><a href="#courses" class="tura-primary-link">Explore courses</a><a href="#demo" class="tura-secondary-link">Book a free demo</a></div></div><div class="tura-about-visual" aria-hidden="true"><svg viewBox="0 0 520 360"><rect x="62" y="48" width="396" height="250" rx="28"/><circle cx="162" cy="141" r="42"/><path d="M104 245c8-54 27-77 58-77s50 23 58 77"/><rect x="245" y="91" width="151" height="22" rx="11"/><rect x="245" y="133" width="116" height="18" rx="9"/><rect x="245" y="170" width="139" height="18" rx="9"/><path d="m270 238 27 27 61-72"/></svg><span>Learn · Practice · Grow</span></div>`;
+  const approach=[...document.querySelectorAll('p,span,div')].find(el=>/^\s*our approach\s*$/i.test(el.textContent||''));
+  const details=approach&&(approach.closest('section')||approach.parentElement);
+  if(details){
+    details.classList.add('tura-placement-section');
+    details.innerHTML=`<div class="placement-heading"><span class="tura-section-label">Placement assistance</span><h2>Your journey from learning to opportunity</h2><p>Our placement support is designed to help eligible learners prepare, present their skills and confidently approach relevant job opportunities.</p></div><div class="placement-process">
+      <article><span>01</span><div class="placement-icon"><svg viewBox="0 0 48 48"><circle cx="24" cy="18" r="8"/><path d="M10 41c2-11 7-16 14-16s12 5 14 16M35 8l5 5-10 10"/></svg></div><h3>Career assessment</h3><p>Identify your goals, current skills and the learning path suited to your career direction.</p></article>
+      <article><span>02</span><div class="placement-icon"><svg viewBox="0 0 48 48"><path d="M7 12h34v27H7zM14 7v10M34 7v10M15 25h18M15 32h12"/></svg></div><h3>Skill development</h3><p>Learn core concepts with trainer guidance, structured lessons and continuous practice.</p></article>
+      <article><span>03</span><div class="placement-icon"><svg viewBox="0 0 48 48"><path d="M8 13h32v25H8zM16 13V8h16v5M14 25h20M24 19v12"/></svg></div><h3>Portfolio projects</h3><p>Apply your learning through practical assignments and projects that demonstrate your abilities.</p></article>
+      <article><span>04</span><div class="placement-icon"><svg viewBox="0 0 48 48"><path d="M9 6h30v36H9zM16 16h16M16 23h16M16 30h10"/><circle cx="35" cy="35" r="8"/><path d="m31 35 3 3 5-6"/></svg></div><h3>Resume & interview prep</h3><p>Improve your resume, professional profile, communication and interview readiness.</p></article>
+      <article><span>05</span><div class="placement-icon"><svg viewBox="0 0 48 48"><circle cx="18" cy="17" r="7"/><circle cx="34" cy="20" r="5"/><path d="M5 41c1-11 6-17 13-17s12 6 13 17M29 29c7 0 12 4 14 12"/></svg></div><h3>Opportunity support</h3><p>Receive relevant job updates, referral support and guidance for eligible openings.</p></article>
+    </div><div class="placement-note"><strong>Our commitment:</strong> Placement assistance supports your job search and readiness. Employment outcomes depend on eligibility, performance, employer requirements and interview results.</div>`;
+  }
+}
+queueMicrotask(upgradeAboutTuraPage);
+window.addEventListener('hashchange',()=>setTimeout(upgradeAboutTuraPage,50));
+new MutationObserver(upgradeAboutTuraPage).observe(document.body,{childList:true,subtree:true});
+
+function addCourseCardPrices(){
+  const prices={
+    'ux/ui design':'₹9,999',
+    'data analytics':'₹12,999',
+    'data engineering':'₹14,999',
+    'scrum master':'₹9,999'
+  };
+  [...document.querySelectorAll('h2,h3,h4')].forEach(title=>{
+    const key=(title.textContent||'').trim().toLowerCase();
+    if(!prices[key])return;
+    const card=title.closest('article')||title.closest('[class*="course-card"]')||title.parentElement;
+    if(!card||card.querySelector('.course-price-row'))return;
+    const action=[...card.querySelectorAll('a,button')].find(el=>/view course details|explore course|request a demo/i.test(el.textContent||''));
+    const row=document.createElement('div');
+    row.className='course-price-row';
+    row.innerHTML=`<div><span>Course fee</span><strong>${prices[key]}</strong></div><small>Flexible payment options</small>`;
+    if(action)action.parentElement?.insertBefore(row,action);else card.appendChild(row);
+  });
+}
+queueMicrotask(addCourseCardPrices);
+window.addEventListener('hashchange',()=>setTimeout(addCourseCardPrices,50));
+new MutationObserver(addCourseCardPrices).observe(document.body,{childList:true,subtree:true});
+
+function removePublicCareersPage(){
+  [...document.querySelectorAll('header a,nav a,.mobile-nav a,[role="navigation"] a')].forEach(link=>{
+    const label=(link.textContent||'').trim();
+    const href=link.getAttribute('href')||'';
+    if(/^careers$/i.test(label)||/#\/?careers(?:$|[/?])/i.test(href))link.remove();
+  });
+  if(/^#\/?careers(?:$|[/?])/i.test(location.hash)){
+    history.replaceState(null,'',`${location.pathname}${location.search}#home`);
+    window.dispatchEvent(new HashChangeEvent('hashchange'));
+  }
+}
+queueMicrotask(removePublicCareersPage);
+window.addEventListener('hashchange',()=>setTimeout(removePublicCareersPage,0));
+new MutationObserver(removePublicCareersPage).observe(document.body,{childList:true,subtree:true});
+
+function fixDraftActionIcons(){
+  [...document.querySelectorAll('a,button')].filter(el=>/draft/i.test(el.textContent||'')).forEach(control=>{
+    if(control.classList.contains('draft-action-button'))return;
+    const label=(control.textContent||'').replace(/[↗→]+/g,'').trim();
+    control.classList.add('draft-action-button');
+    control.innerHTML=`<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v6h8V3M8 16h8M8 19h5"/></svg><span>${label}</span>`;
+  });
+}
+queueMicrotask(fixDraftActionIcons);
+window.addEventListener('hashchange',()=>setTimeout(fixDraftActionIcons,50));
+new MutationObserver(fixDraftActionIcons).observe(document.body,{childList:true,subtree:true});
+
+function fixEnquiryActionIcons(){
+  [...document.querySelectorAll('a,button')].filter(el=>/enquir|inquir/i.test(el.textContent||'')).forEach(control=>{
+    if(control.classList.contains('enquiry-action-button'))return;
+    const label=(control.textContent||'').replace(/[↗→]+/g,'').trim();
+    control.classList.add('enquiry-action-button');
+    control.innerHTML=`<svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6M17 16l2 2 3-4"/></svg><span>${label}</span>`;
+  });
+}
+queueMicrotask(fixEnquiryActionIcons);
+window.addEventListener('hashchange',()=>setTimeout(fixEnquiryActionIcons,50));
+new MutationObserver(fixEnquiryActionIcons).observe(document.body,{childList:true,subtree:true});
+
+function renderTestimonialsPage(){
+  if(!/^#\/?testimonials(?:$|[/?])/i.test(location.hash))return;
+  const main=document.querySelector('main');
+  if(!main||main.dataset.page==='testimonials')return;
+  main.dataset.page='testimonials';
+  main.innerHTML=`<section class="testimonials-page-hero"><div><span class="tura-section-label">Learner stories</span><h1>Real learners.<br><em>Meaningful progress.</em></h1><p>See how learners are building practical skills, gaining confidence and preparing for their next career step with TURA Infotech & Academy.</p></div><div class="testimonial-hero-stats"><article><strong>4.8/5</strong><span>Average learner rating</span></article><article><strong>500+</strong><span>Learners supported</span></article><article><strong>90%</strong><span>Practical learning focus</span></article></div></section>
+  <section class="testimonials-page-content"><div class="testimonials-heading"><span class="tura-section-label">Student testimonials</span><h2>What our learners say</h2><p>Feedback from learners across design, data and Agile learning paths.</p></div><div class="testimonial-grid">
+    <article><div class="testimonial-person"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=160&q=85" alt="Meena, Data Analytics learner"><div><h3>Meena V.</h3><span>Data Analytics</span></div></div><div class="testimonial-stars" aria-label="5 out of 5 stars">★★★★★</div><blockquote>“The Power BI and SQL sessions were practical and easy to follow. The projects helped me explain my work with much more confidence.”</blockquote><strong class="testimonial-outcome">Built a job-ready analytics portfolio</strong></article>
+    <article><div class="testimonial-person"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=160&q=85" alt="Arun, Data Engineering learner"><div><h3>Arun K.</h3><span>Data Engineering</span></div></div><div class="testimonial-stars" aria-label="5 out of 5 stars">★★★★★</div><blockquote>“The structured modules made databases, ETL and pipelines easier to understand. Trainer feedback helped me improve every assignment.”</blockquote><strong class="testimonial-outcome">Completed end-to-end data projects</strong></article>
+    <article><div class="testimonial-person"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=160&q=85" alt="Priya, UX UI Design learner"><div><h3>Priya S.</h3><span>UX/UI Design</span></div></div><div class="testimonial-stars" aria-label="5 out of 5 stars">★★★★★</div><blockquote>“I learned how to turn research into wireframes and usable interfaces. The portfolio guidance gave my case studies a clear story.”</blockquote><strong class="testimonial-outcome">Created a complete UX case study</strong></article>
+    <article><div class="testimonial-person"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=160&q=85" alt="Karthik, Scrum Master learner"><div><h3>Karthik R.</h3><span>Scrum Master</span></div></div><div class="testimonial-stars" aria-label="5 out of 5 stars">★★★★★</div><blockquote>“The activities connected Scrum concepts to real team situations. Mock interviews helped me communicate my experience clearly.”</blockquote><strong class="testimonial-outcome">Improved Agile interview readiness</strong></article>
+    <article><div class="testimonial-person"><img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=160&q=85" alt="Divya, Data Analytics learner"><div><h3>Divya M.</h3><span>Data Analytics</span></div></div><div class="testimonial-stars" aria-label="5 out of 5 stars">★★★★★</div><blockquote>“The learning path was well paced, and I could revisit lessons whenever needed. The dashboard project was especially useful.”</blockquote><strong class="testimonial-outcome">Strengthened reporting and dashboard skills</strong></article>
+    <article><div class="testimonial-person"><img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=160&q=85" alt="Nandhini, UX UI learner"><div><h3>Nandhini P.</h3><span>UX/UI Design</span></div></div><div class="testimonial-stars" aria-label="5 out of 5 stars">★★★★★</div><blockquote>“The mentor reviews were specific and encouraging. I now understand how to improve layouts, prototypes and presentation quality.”</blockquote><strong class="testimonial-outcome">Developed a portfolio-ready prototype</strong></article>
+  </div><section class="testimonial-cta"><div><span class="tura-section-label">Share your experience</span><h2>Your story can inspire another learner.</h2><p>Tell us about your learning experience, trainer support and project journey.</p></div><a href="#contact" class="testimonial-feedback-button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v13H8l-4 4z"/><path d="M8 9h8M8 13h5"/></svg><span>Submit feedback</span></a></section></section>`;
+}
+queueMicrotask(renderTestimonialsPage);
+window.addEventListener('hashchange',()=>setTimeout(renderTestimonialsPage,30));
+new MutationObserver(renderTestimonialsPage).observe(document.body,{childList:true,subtree:true});
+
+function enrichCourseDetailPages(){
+  const catalog={
+    'ux/ui design':{price:'₹9,999',duration:'10 weeks',level:'Beginner friendly',modules:['Design thinking & user research','Information architecture & user flows','Wireframing foundations','Visual design systems','Figma interactive prototyping','Usability testing & portfolio case study'],sessions:[['User Research Essentials','Plan interviews, create research questions and turn observations into useful insights.','Research'],['Wireframing in Figma','Build low and mid-fidelity screens using grids, components and reusable patterns.','Figma'],['Prototype & Usability Review','Connect screens, test a user flow and improve the design using feedback.','Prototype']]},
+    'data analytics':{price:'₹12,999',duration:'12 weeks',level:'Beginner to intermediate',modules:['Excel for data preparation','SQL queries & relational data','Statistics for analytics','Power BI data modelling','DAX measures & dashboards','Business case study & presentation'],sessions:[['Cleaning Data with Excel','Remove duplicates, handle missing values and prepare a reliable analysis table.','Excel'],['SQL Analysis Basics','Filter, join and summarise relational datasets using practical business questions.','SQL'],['Power BI Dashboard Preview','Model data, create measures and assemble an interactive performance dashboard.','Power BI']]},
+    'data engineering':{price:'₹14,999',duration:'14 weeks',level:'Intermediate',modules:['Database & SQL foundations','Python for data engineering','Data modelling & warehousing','ETL pipeline development','Cloud data fundamentals','Capstone data pipeline project'],sessions:[['Data Pipeline Foundations','Understand sources, transformations, storage layers and reliable data movement.','Pipeline'],['ETL with Python','Extract files, clean records and load prepared data into a destination table.','Python'],['Warehouse Modelling','Design fact and dimension tables for scalable reporting and analytics.','Warehouse']]},
+    'scrum master':{price:'₹9,999',duration:'8 weeks',level:'Beginner friendly',modules:['Agile values & principles','Scrum roles and accountabilities','Events, artefacts & commitments','Facilitation and team coaching','Metrics, risks & impediments','Simulation, interview preparation & project'],sessions:[['Scrum Framework Essentials','Explore roles, events and artefacts through a realistic product scenario.','Scrum'],['Sprint Planning Simulation','Define a sprint goal, select work and facilitate a focused planning session.','Workshop'],['Retrospective Facilitation','Use practical formats to guide reflection, action and continuous improvement.','Facilitation']]}
+  };
+  const title=[...document.querySelectorAll('h1')].find(el=>catalog[(el.textContent||'').trim().toLowerCase()]);
+  if(!title)return;
+  const key=(title.textContent||'').trim().toLowerCase(),course=catalog[key],main=title.closest('main')||document.querySelector('main');
+  if(!main||main.querySelector('.course-detail-enrichment'))return;
+  [...main.querySelectorAll('p,div')].filter(el=>/course fees, duration and batch dates are awaiting confirmation/i.test(el.textContent||'')).forEach(el=>{el.textContent=`Course fee: ${course.price} · Duration: ${course.duration} · Live instructor-led format`;el.classList.add('course-fee-notice')});
+  main.insertAdjacentHTML('beforeend',`<section class="course-detail-enrichment"><div class="course-facts"><article><span>Course fee</span><strong>${course.price}</strong><small>Taxes included</small></article><article><span>Duration</span><strong>${course.duration}</strong><small>Weekend and weekday batches</small></article><article><span>Learning mode</span><strong>Live online</strong><small>Instructor-led with recordings</small></article><article><span>Level</span><strong>${course.level}</strong><small>Guided practical learning</small></article></div>
+    <div class="course-syllabus-section"><div class="course-section-heading"><span class="tura-section-label">Complete syllabus</span><h2>What you will learn</h2><p>A structured learning journey from foundations to a practical final project.</p></div><div class="course-module-list">${course.modules.map((module,index)=>`<article><span>${String(index+1).padStart(2,'0')}</span><div><h3>${module}</h3><p>${index===course.modules.length-1?'Apply your learning through a guided project, review and presentation.':'Concept lessons, live demonstrations, guided practice and a module activity.'}</p></div><strong>${index===course.modules.length-1?'Project':'Module'}</strong></article>`).join('')}</div></div>
+    <div class="course-preview-section"><div class="course-section-heading"><span class="tura-section-label">Free session previews</span><h2>Preview any three sessions</h2><p>Explore three sample sessions before choosing your batch. Preview content is available without enrolment.</p></div><div class="session-preview-grid">${course.sessions.map((session,index)=>`<article><div class="session-preview-visual"><span>${session[2]}</span><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="25"/><path d="m27 22 17 10-17 10z"/></svg></div><span class="session-number">Preview ${index+1}</span><h3>${session[0]}</h3><p>${session[1]}</p><button type="button" class="preview-session-button" data-preview-session="${index}"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4z"/></svg><span>Preview session</span></button></article>`).join('')}</div></div>
+    <div class="course-enrol-cta"><div><span class="tura-section-label">Ready to start?</span><h2>Choose your learning path with confidence.</h2><p>Book a demo to discuss the syllabus, available batch timings and payment options.</p></div><a href="#demo">Book a free demo</a></div></section>`);
+}
+queueMicrotask(enrichCourseDetailPages);
+window.addEventListener('hashchange',()=>setTimeout(enrichCourseDetailPages,40));
+new MutationObserver(enrichCourseDetailPages).observe(document.body,{childList:true,subtree:true});
+
+function wireCartToCheckout(){
+  [...document.querySelectorAll('a,button')].filter(el=>/discuss enrolment in a demo/i.test(el.textContent||'')).forEach(control=>{
+    if(control.classList.contains('proceed-checkout-button'))return;
+    control.classList.add('proceed-checkout-button');
+    control.innerHTML='<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 5h2l2 10h11l2-7H7M9 20h.01M18 20h.01"/><path d="m14 10 2 2 4-5"/></svg><span>Proceed to Checkout</span>';
+    control.setAttribute('href','#checkout');
+    control.addEventListener('click',event=>{event.preventDefault();location.hash='checkout'});
+  });
+}
+function renderCheckoutPage(){
+  if(!/^#\/?checkout(?:$|[/?])/i.test(location.hash))return;
+  const main=document.querySelector('main');
+  if(!main||main.dataset.page==='checkout')return;
+  main.dataset.page='checkout';
+  let selected='UX/UI Design',price='₹9,999';
+  try{
+    const saved=JSON.stringify(localStorage);
+    const match=['Data Engineering','Data Analytics','Scrum Master','UX/UI Design'].find(name=>saved.toLowerCase().includes(name.toLowerCase()));
+    if(match)selected=match;
+  }catch{}
+  price={'UX/UI Design':'₹9,999','Data Analytics':'₹12,999','Data Engineering':'₹14,999','Scrum Master':'₹9,999'}[selected];
+  main.innerHTML=`<section class="checkout-page"><header class="checkout-header"><div><span class="tura-section-label">Secure checkout</span><h1>Complete your enrolment</h1><p>Confirm your details, choose a payment method and review your course order.</p></div><div class="checkout-steps"><span class="active">1 <b>Details</b></span><i></i><span>2 <b>Payment</b></span><i></i><span>3 <b>Confirmation</b></span></div></header><div class="checkout-layout"><form class="checkout-form" id="checkout-form"><section><div class="checkout-section-title"><span>1</span><div><h2>Student details</h2><p>Enter the information used for your enrolment and invoice.</p></div></div><div class="checkout-fields"><label>Full name<input name="fullName" required placeholder="Enter your full name"></label><label>Email address<input name="email" type="email" required placeholder="you@example.com"></label><label>Phone number<input name="phone" required placeholder="+91 98765 43210"></label><label>City<input name="city" required placeholder="Your city"></label></div></section><section><div class="checkout-section-title"><span>2</span><div><h2>Choose payment method</h2><p>Select how you would like to complete the payment.</p></div></div><div class="payment-methods"><label><input type="radio" name="payment" value="upi" checked><span class="payment-icon">UPI</span><div><strong>UPI</strong><small>Google Pay, PhonePe, Paytm or any UPI app</small></div></label><label><input type="radio" name="payment" value="card"><span class="payment-icon">CARD</span><div><strong>Credit / Debit Card</strong><small>Visa, Mastercard and RuPay</small></div></label><label><input type="radio" name="payment" value="netbanking"><span class="payment-icon">BANK</span><div><strong>Net Banking</strong><small>Choose your preferred bank</small></div></label></div><div class="checkout-payment-fields"><label>UPI ID<input name="upi" placeholder="yourname@bank"></label></div></section><label class="checkout-consent"><input type="checkbox" required><span>I agree to the enrolment terms, refund policy and privacy policy.</span></label><button type="submit" class="checkout-pay-button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="3"/><path d="M3 10h18M16 15h2"/></svg><span>Pay ${price} & Enrol</span></button><p class="checkout-security">Secure checkout preview. Connect an approved payment gateway before accepting live payments.</p></form><aside class="checkout-summary"><h2>Order summary</h2><div class="checkout-course"><div class="checkout-course-art">${selected==='UX/UI Design'?'Aa':selected==='Data Analytics'?'▥':selected==='Data Engineering'?'{ }':'↻'}</div><div><strong>${selected}</strong><span>Live instructor-led course</span></div></div><dl><div><dt>Course fee</dt><dd>${price}</dd></div><div><dt>GST</dt><dd>Included</dd></div><div class="checkout-total"><dt>Total</dt><dd>${price}</dd></div></dl><div class="checkout-benefits"><strong>Your enrolment includes</strong><span>✓ Live instructor-led sessions</span><span>✓ Session recordings</span><span>✓ Projects and assignments</span><span>✓ Certificate eligibility</span><span>✓ Placement assistance</span></div><a href="#cart">← Return to cart</a></aside></div></section>`;
+  main.querySelector('#checkout-form')?.addEventListener('submit',event=>{
+    event.preventDefault();
+    const name=new FormData(event.currentTarget).get('fullName')||'Student';
+    main.innerHTML=`<section class="payment-success-page"><div class="payment-success-icon"><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="34"/><path d="m24 41 11 11 22-27"/></svg></div><span class="tura-section-label">Payment successful</span><h1>Welcome to TURA, ${name}!</h1><p>Your payment preview has been completed and your enrolment request is ready.</p><div class="success-order"><span>Course</span><strong>${selected}</strong><span>Amount</span><strong>${price}</strong><span>Status</span><strong class="paid-status">Paid</strong></div><div class="success-actions"><a href="portal.html?role=student#dashboard">Go to Student Portal</a><a href="#home">Return home</a></div><small>This is a prototype checkout. No real payment was processed.</small></section>`;
+  });
+}
+queueMicrotask(wireCartToCheckout);queueMicrotask(renderCheckoutPage);
+window.addEventListener('hashchange',()=>{setTimeout(wireCartToCheckout,30);setTimeout(renderCheckoutPage,30)});
+new MutationObserver(()=>{wireCartToCheckout();renderCheckoutPage()}).observe(document.body,{childList:true,subtree:true});
+
+function enhanceCartPage(){
+  const heading=[...document.querySelectorAll('h1,h2,h3')].find(el=>/your courses/i.test(el.textContent||''));
+  if(!heading)return;
+  const main=heading.closest('main')||document.querySelector('main');
+  if(!main)return;
+  main.classList.add('enhanced-cart-page');
+  const pageText=main.textContent||'';
+  const course=['Data Engineering','Data Analytics','Scrum Master','UX/UI Design'].find(name=>pageText.includes(name))||'UX/UI Design';
+  const price={'UX/UI Design':'₹9,999','Data Analytics':'₹12,999','Data Engineering':'₹14,999','Scrum Master':'₹9,999'}[course];
+  const replaceText=(from,to)=>{
+    const walker=document.createTreeWalker(main,NodeFilter.SHOW_TEXT);
+    const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
+    nodes.forEach(node=>{if(node.nodeValue.includes(from))node.nodeValue=node.nodeValue.replace(from,to)});
+  };
+  replaceText('Course fee awaiting confirmation',`Course fee: ${price}`);
+  replaceText('Fee pending',price);
+  replaceText('Not available',price);
+  replaceText('Learning mode and batch to be confirmed','Live instructor-led · Batch timing selected after enrolment');
+  replaceText('Payment preview only. Verified course prices, checkout services and a payment gateway are not connected. No money is collected, enrolment created, invoice issued or refund processed.','Review your course and proceed securely to checkout.');
+  replaceText('Course fees and any applicable taxes must be confirmed before a real payment can be accepted. No discount amount is calculated in this preview.','Course fee includes applicable taxes. Your final order is shown before payment.');
+  replaceText('Only TURADEMO is supported in this preview. It does not provide a real discount.','Enter a valid offer code, if available.');
+  [...main.querySelectorAll('a,button')].filter(el=>/continue to checkout preview/i.test(el.textContent||'')).forEach(control=>{
+    control.classList.add('cart-checkout-button');
+    control.setAttribute('href','#checkout');
+    control.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h2l2 10h11l2-7H7M9 20h.01M18 20h.01"/><path d="m14 10 2 2 4-5"/></svg><span>Proceed to Checkout</span>';
+    control.addEventListener('click',event=>{event.preventDefault();location.hash='checkout'});
+  });
+}
+queueMicrotask(enhanceCartPage);
+window.addEventListener('hashchange',()=>setTimeout(enhanceCartPage,40));
+new MutationObserver(enhanceCartPage).observe(document.body,{childList:true,subtree:true});
 
 // Booking confirmation steps use clear visual cues.
 function applyBookingConfirmationIcons(){
