@@ -2768,6 +2768,62 @@ function installDemoBookingPersistence(){
 }
 queueMicrotask(installDemoBookingPersistence);
 
+function clarifyBookingConfirmationSteps(){
+  const heading=[...document.querySelectorAll('h1,h2,h3')].find(el=>/booking confirmation/i.test(el.textContent||''));
+  if(!heading)return;
+  heading.innerHTML='<span class="confirmation-check" aria-hidden="true">✓</span> What happens next';
+  const section=heading.closest('section')||heading.parentElement;
+  const intro=[...section.querySelectorAll('p')].find(el=>/after saving/i.test(el.textContent||''));
+  if(intro)intro.textContent='After you save your request, follow these three steps.';
+  const steps=[...section.querySelectorAll('.demo-followups > div')];
+  const content=[
+    ['1','Review your request','Your selected course, date and preferred time will appear in My Demo Bookings.','<svg viewBox="0 0 64 64"><rect x="13" y="9" width="38" height="47" rx="7"/><path d="M22 22h20M22 31h13M22 40h9"/><circle cx="44" cy="43" r="9"/><path d="m40 43 3 3 6-7"/></svg>'],
+    ['2','Change your request','Use My Demo Bookings to reschedule or cancel the request.','<svg viewBox="0 0 64 64"><rect x="9" y="14" width="42" height="38" rx="7"/><path d="M9 25h42M19 9v10M41 9v10"/><path d="m35 43 15-15 6 6-15 15-9 3z"/></svg>'],
+    ['3','Wait for confirmation','The TURA team will confirm the trainer, final time and meeting link.','<svg viewBox="0 0 64 64"><circle cx="24" cy="22" r="9"/><path d="M8 48c1-11 7-17 16-17 7 0 12 4 15 10"/><circle cx="46" cy="43" r="12"/><path d="m40 43 4 4 8-10"/></svg>']
+  ];
+  steps.slice(0,3).forEach((step,index)=>{
+    const [number,title,description,illustration]=content[index];
+    step.classList.add('confirmation-step');
+    step.innerHTML=`<span class="confirmation-step-number" aria-hidden="true">${number}</span><span class="confirmation-step-art" aria-hidden="true">${illustration}</span><div><strong>${title}</strong><p>${description}</p></div>`;
+  });
+}
+queueMicrotask(clarifyBookingConfirmationSteps);
+window.addEventListener('hashchange',()=>setTimeout(clarifyBookingConfirmationSteps,50));
+new MutationObserver(clarifyBookingConfirmationSteps).observe(document.body,{childList:true,subtree:true});
+
+function enhanceDemoBookingsSection(){
+  const title=[...document.querySelectorAll('h1,h2,h3')].find(el=>/my demo bookings/i.test(el.textContent||''));
+  if(!title)return;
+  const section=title.closest('section')||title.parentElement;
+  if(!section)return;
+  section.classList.add('my-demo-bookings-section');
+  const empty=[...section.querySelectorAll('div')].find(el=>/no demo requests saved/i.test(el.textContent||''));
+  if(empty&&!empty.querySelector('.demo-empty-art')){
+    empty.classList.add('demo-bookings-empty');
+    empty.insertAdjacentHTML('afterbegin','<span class="demo-empty-art" aria-hidden="true"><svg viewBox="0 0 96 96"><rect x="17" y="21" width="62" height="58" rx="10"/><path d="M17 38h62M31 13v17M65 13v17"/><circle cx="67" cy="67" r="18"/><path d="m59 67 6 6 12-15"/></svg></span>');
+  }
+}
+document.addEventListener('click',(event)=>{
+  const control=event.target.closest('a,button');
+  if(!control)return;
+  const label=(control.textContent||'').trim();
+  if(/request your first demo/i.test(label)){
+    event.preventDefault();
+    const target=[...document.querySelectorAll('h1,h2,h3')].find(el=>/choose (a )?course|book a (free )?demo/i.test(el.textContent||''))
+      ||document.querySelector('form');
+    target?.scrollIntoView({behavior:'smooth',block:'start'});
+    setTimeout(()=>document.querySelector('form input,form select,form button')?.focus(),450);
+  }
+  if(/view all bookings/i.test(label)){
+    event.preventDefault();
+    const section=[...document.querySelectorAll('section,div')].find(el=>/^\s*my demo bookings/i.test(el.textContent||''));
+    section?.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+},true);
+queueMicrotask(enhanceDemoBookingsSection);
+window.addEventListener('hashchange',()=>setTimeout(enhanceDemoBookingsSection,50));
+new MutationObserver(enhanceDemoBookingsSection).observe(document.body,{childList:true,subtree:true});
+
 // Booking confirmation steps use clear visual cues.
 function applyBookingConfirmationIcons(){
  const panel=document.querySelector('.demo-confirmation-strip');if(!panel)return;

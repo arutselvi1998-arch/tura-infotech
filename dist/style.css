@@ -68,3 +68,20 @@ header nav a[href="#demo"] .demo-calendar-icon,header nav a[href="#demo"] .cta-i
 .demo-booking-icon svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .demo-booking-remove{min-height:38px;padding:8px 14px;border:1px solid #e72b8a;border-radius:9px;color:#d51f7c;background:#fff;font:inherit;font-weight:700;cursor:pointer}
 @media(max-width:640px){.demo-booking-card{grid-template-columns:42px 1fr}.demo-booking-remove{grid-column:2;justify-self:start}}
+.confirmation-check{display:inline-grid;place-items:center;width:31px;height:31px;margin-right:9px;border-radius:50%;color:#fff;background:linear-gradient(135deg,#ee2b89,#9c32db);font-size:18px;vertical-align:middle}
+.confirmation-step{position:relative;display:grid!important;grid-template-columns:76px 1fr;gap:16px;align-items:center;min-height:118px;padding:18px!important;border:1px solid #eddff0;border-radius:16px;background:linear-gradient(145deg,#fff 65%,#fff2f9);cursor:default;overflow:hidden}
+.confirmation-step-number{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;color:#fff;background:linear-gradient(135deg,#ed2c89,#a431da);font-size:17px;font-weight:800}
+.confirmation-step-art{grid-column:1;display:grid;place-items:center;width:70px;height:70px;margin-top:-30px;border-radius:20px;color:#d92787;background:linear-gradient(145deg,#fff0f7,#f0e8ff)}
+.confirmation-step-art svg{width:47px;height:47px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.confirmation-step-number{position:absolute;top:12px;left:12px;width:29px;height:29px;font-size:14px;z-index:2;box-shadow:0 4px 12px rgba(184,45,155,.24)}
+.confirmation-step strong{display:block;color:#170729;font-size:16px;margin:1px 0 6px}
+.confirmation-step p{margin:0!important;color:#765f7f;line-height:1.55}
+@media(max-width:640px){.confirmation-step{grid-template-columns:62px 1fr}.confirmation-step-art{width:58px;height:58px}.confirmation-step-art svg{width:39px;height:39px}}
+.my-demo-bookings-section{margin-top:54px!important;margin-bottom:56px!important;padding:0 10px!important}
+.my-demo-bookings-section>h2,.my-demo-bookings-section>h3{font-size:clamp(28px,2.25vw,38px)!important;line-height:1.15;margin-bottom:24px!important}
+.demo-bookings-empty{display:flex!important;min-height:330px!important;padding:44px 24px!important;flex-direction:column;align-items:center;justify-content:center;gap:14px;border:2px dashed #e5d1ed!important;border-radius:22px!important;background:linear-gradient(145deg,#fff 35%,#fff4fa)!important;text-align:center!important}
+.demo-empty-art{display:grid;place-items:center;width:108px;height:108px;margin-bottom:5px;border-radius:28px;color:#df2786;background:linear-gradient(145deg,#ffeaf5,#eee6ff);box-shadow:0 14px 34px rgba(170,43,150,.13)}
+.demo-empty-art svg{width:72px;height:72px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.demo-bookings-empty p,.demo-bookings-empty{font-size:17px!important}
+.demo-bookings-empty a,.demo-bookings-empty button{display:inline-flex!important;align-items:center;justify-content:center;min-height:52px;padding:13px 22px!important;border-radius:12px!important;color:#fff!important;background:linear-gradient(135deg,#e52a88,#a72fd3)!important;font-size:16px!important;font-weight:800!important;text-decoration:none!important;cursor:pointer}
+@media(max-width:640px){.demo-bookings-empty{min-height:270px!important}.demo-empty-art{width:88px;height:88px}.demo-empty-art svg{width:58px;height:58px}}
