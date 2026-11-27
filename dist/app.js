@@ -2802,6 +2802,16 @@ function enhanceDemoBookingsSection(){
     empty.classList.add('demo-bookings-empty');
     empty.insertAdjacentHTML('afterbegin','<span class="demo-empty-art" aria-hidden="true"><svg viewBox="0 0 96 96"><rect x="17" y="21" width="62" height="58" rx="10"/><path d="M17 38h62M31 13v17M65 13v17"/><circle cx="67" cy="67" r="18"/><path d="m59 67 6 6 12-15"/></svg></span>');
   }
+  [...section.querySelectorAll('a,button')].filter(el=>/request your first demo/i.test(el.textContent||'')).forEach(control=>{
+    if(control.classList.contains('demo-request-button'))return;
+    control.classList.add('demo-request-button');
+    control.innerHTML='<svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 10h18m-9 3v6m-3-3h6"/></svg><span>Request your first demo</span>';
+  });
+  [...section.querySelectorAll('a,button')].filter(el=>/view all bookings/i.test(el.textContent||'')).forEach(control=>{
+    if(control.classList.contains('view-all-bookings-button'))return;
+    control.classList.add('view-all-bookings-button');
+    control.innerHTML='<span>View all bookings</span><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>';
+  });
 }
 document.addEventListener('click',(event)=>{
   const control=event.target.closest('a,button');
@@ -2821,6 +2831,16 @@ document.addEventListener('click',(event)=>{
 queueMicrotask(enhanceDemoBookingsSection);
 window.addEventListener('hashchange',()=>setTimeout(enhanceDemoBookingsSection,50));
 new MutationObserver(enhanceDemoBookingsSection).observe(document.body,{childList:true,subtree:true});
+
+function enlargeDemoBookingForm(){
+  const choose=[...document.querySelectorAll('h1,h2,h3,h4')].find(el=>/choose a course/i.test(el.textContent||''));
+  if(!choose)return;
+  const container=choose.closest('section')||choose.parentElement?.parentElement?.parentElement;
+  container?.classList.add('demo-booking-form-section');
+}
+queueMicrotask(enlargeDemoBookingForm);
+window.addEventListener('hashchange',()=>setTimeout(enlargeDemoBookingForm,50));
+new MutationObserver(enlargeDemoBookingForm).observe(document.body,{childList:true,subtree:true});
 
 // Booking confirmation steps use clear visual cues.
 function applyBookingConfirmationIcons(){

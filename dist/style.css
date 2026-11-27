@@ -70,10 +70,11 @@ header nav a[href="#demo"] .demo-calendar-icon,header nav a[href="#demo"] .cta-i
 @media(max-width:640px){.demo-booking-card{grid-template-columns:42px 1fr}.demo-booking-remove{grid-column:2;justify-self:start}}
 .confirmation-check{display:inline-grid;place-items:center;width:31px;height:31px;margin-right:9px;border-radius:50%;color:#fff;background:linear-gradient(135deg,#ee2b89,#9c32db);font-size:18px;vertical-align:middle}
 .confirmation-step{position:relative;display:grid!important;grid-template-columns:76px 1fr;gap:16px;align-items:center;min-height:118px;padding:18px!important;border:1px solid #eddff0;border-radius:16px;background:linear-gradient(145deg,#fff 65%,#fff2f9);cursor:default;overflow:hidden}
+.confirmation-step>.booking-step-icon,.confirmation-step>.booking-confirm-icon,.confirmation-step>svg:not(.confirmation-step-art svg){display:none!important}
 .confirmation-step-number{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;color:#fff;background:linear-gradient(135deg,#ed2c89,#a431da);font-size:17px;font-weight:800}
-.confirmation-step-art{grid-column:1;display:grid;place-items:center;width:70px;height:70px;margin-top:-30px;border-radius:20px;color:#d92787;background:linear-gradient(145deg,#fff0f7,#f0e8ff)}
+.confirmation-step-art{grid-column:1;grid-row:1;display:grid;place-items:center;width:70px;height:70px;margin:0;border-radius:20px;color:#d92787;background:linear-gradient(145deg,#fff0f7,#f0e8ff)}
 .confirmation-step-art svg{width:47px;height:47px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
-.confirmation-step-number{position:absolute;top:12px;left:12px;width:29px;height:29px;font-size:14px;z-index:2;box-shadow:0 4px 12px rgba(184,45,155,.24)}
+.confirmation-step-number{position:absolute;top:8px;left:8px;width:28px;height:28px;font-size:13px;z-index:3;box-shadow:0 4px 12px rgba(184,45,155,.24)}
 .confirmation-step strong{display:block;color:#170729;font-size:16px;margin:1px 0 6px}
 .confirmation-step p{margin:0!important;color:#765f7f;line-height:1.55}
 @media(max-width:640px){.confirmation-step{grid-template-columns:62px 1fr}.confirmation-step-art{width:58px;height:58px}.confirmation-step-art svg{width:39px;height:39px}}
@@ -84,4 +85,22 @@ header nav a[href="#demo"] .demo-calendar-icon,header nav a[href="#demo"] .cta-i
 .demo-empty-art svg{width:72px;height:72px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
 .demo-bookings-empty p,.demo-bookings-empty{font-size:17px!important}
 .demo-bookings-empty a,.demo-bookings-empty button{display:inline-flex!important;align-items:center;justify-content:center;min-height:52px;padding:13px 22px!important;border-radius:12px!important;color:#fff!important;background:linear-gradient(135deg,#e52a88,#a72fd3)!important;font-size:16px!important;font-weight:800!important;text-decoration:none!important;cursor:pointer}
+.demo-request-button{gap:10px;white-space:nowrap}
+.demo-request-button svg{flex:0 0 auto;width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.view-all-bookings-button{display:inline-flex!important;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:11px 18px!important;border:1.5px solid #e52a88!important;border-radius:12px!important;color:#d9217e!important;background:#fff!important;font-size:16px!important;font-weight:800!important;line-height:1!important;text-decoration:none!important;white-space:nowrap;cursor:pointer;transition:.2s ease}
+.view-all-bookings-button:hover{color:#fff!important;background:linear-gradient(135deg,#e52a88,#a72fd3)!important;transform:translateY(-1px);box-shadow:0 8px 20px rgba(181,42,154,.18)}
+.view-all-bookings-button svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.demo-booking-form-section{font-size:16px!important}
+.demo-booking-form-section h2,.demo-booking-form-section h3,.demo-booking-form-section h4{font-size:clamp(22px,1.55vw,28px)!important;line-height:1.2!important;margin-bottom:12px!important}
+.demo-booking-form-section h2+*,.demo-booking-form-section h3+*,.demo-booking-form-section h4+*{font-size:15px!important;line-height:1.55!important}
+.demo-booking-form-section label{font-size:15px!important;font-weight:750!important;line-height:1.4!important}
+.demo-booking-form-section input,.demo-booking-form-section select,.demo-booking-form-section textarea{min-height:58px!important;padding:14px 16px!important;border-radius:12px!important;font-size:16px!important}
+.demo-booking-form-section input[type="checkbox"],.demo-booking-form-section input[type="radio"]{min-height:22px!important;width:22px!important;height:22px!important;padding:0!important}
+.demo-booking-form-section button{min-height:54px;font-size:16px!important;font-weight:800!important}
+.demo-booking-form-section [class*="course"]{font-size:15px}
+.demo-booking-form-section [class*="course"] strong,.demo-booking-form-section [class*="course"] h4{font-size:18px!important}
+.demo-booking-form-section [class*="course"] p{font-size:14px!important;line-height:1.55!important}
+.demo-booking-form-section [class*="time"] button,.demo-booking-form-section [class*="slot"]{min-height:54px!important;font-size:16px!important}
+.demo-booking-form-section svg{max-width:none}
+@media(min-width:1100px){.demo-booking-form-section{padding-top:24px!important;padding-bottom:34px!important}.demo-booking-form-section>div{gap:28px!important}}
 @media(max-width:640px){.demo-bookings-empty{min-height:270px!important}.demo-empty-art{width:88px;height:88px}.demo-empty-art svg{width:58px;height:58px}}
